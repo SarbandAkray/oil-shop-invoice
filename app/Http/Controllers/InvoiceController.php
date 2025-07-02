@@ -18,15 +18,18 @@ class InvoiceController extends Controller
         $data = $request->validate([
             'number' => 'required',
             'date' => 'required',
-            'customer_name' => 'required',
-            'address' => 'required',
-            'phone' => 'required',
+            'customer_name' => 'nullable',
+            'address' => 'nullable',
+            'phone' => 'nullable',
             'items' => 'required|array',
             'items.*.name' => 'required',
             'items.*.quantity' => 'required|numeric',
             'items.*.unit_price' => 'required|numeric',
             'tax' => 'nullable|numeric',
+            'currency' => 'nullable|string',
         ]);
+
+
         session(['invoice' => $data]);
         return redirect()->route('invoice.print');
     }

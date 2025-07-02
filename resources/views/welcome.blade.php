@@ -333,8 +333,15 @@
             background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
         }
 
-        .btn-secondary:hover {
-            box-shadow: 0 8px 25px rgba(72, 187, 120, 0.4);
+        /* Red background for delete button */
+        .btn-delete {
+            background: linear-gradient(135deg, #e53e3e 0%, #c53030 100%) !important;
+            color: #fff !important;
+        }
+
+        .btn-delete:hover {
+            box-shadow: 0 8px 25px rgba(229, 62, 62, 0.3);
+            filter: brightness(1.1);
         }
 
         /* Action Buttons Container */
@@ -437,6 +444,14 @@
             <div class="form-section">
                 <div class="form-grid">
                     <div class="form-group">
+                        <label>{{ __('invoice.currency') ?? 'Currency' }}</label>
+                        <select id="currency" name="currency" onchange="updateCurrencySymbol()"
+                            style="padding: 12px 16px; border: 2px solid #e2e8f0; border-radius: 8px; font-size: 16px;">
+                            <option value="USD" selected>USD ($)</option>
+                            <option value="IQD">IQD (ع.د)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
                         <label>{{ __('invoice.invoice_number') }}</label>
                         <input type="text" id="invoice_number" name="number" required readonly>
                     </div>
@@ -452,15 +467,15 @@
                 <div class="form-grid">
                     <div class="form-group">
                         <label>{{ __('invoice.customer_name') }}</label>
-                        <input type="text" name="customer_name" required>
+                        <input type="text" name="customer_name">
                     </div>
                     <div class="form-group">
                         <label>{{ __('invoice.address') }}</label>
-                        <input type="text" name="address" required>
+                        <input type="text" name="address">
                     </div>
                     <div class="form-group">
                         <label>{{ __('invoice.phone') }}</label>
-                        <input type="tel" name="phone" required>
+                        <input type="tel" name="phone">
                     </div>
                 </div>
             </div>
@@ -474,6 +489,7 @@
                             <th>{{ __('invoice.quantity') }}</th>
                             <th>{{ __('invoice.unit_price') }}</th>
                             <th>{{ __('invoice.total') }}</th>
+                            <th>{{ __('invoice.actions') }}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -484,6 +500,8 @@
                             <td><input type="number" min="0" step="0.01" value="0"
                                     name="items[0][unit_price]" onchange="updateTotal(this)" required></td>
                             <td>$0.00</td>
+                            <td class="actions-col"><button type="button" class="btn btn-secondary btn-delete"
+                                    onclick="deleteRow(this)">🗑️</button></td>
                         </tr>
                     </tbody>
                 </table>
@@ -525,55 +543,143 @@
         </div>
     </form>
     <script>
-        // Handle automatic date and invoice number.
+        // An array to store invoice item data
+        let invoiceItems = [];
+        let currentCurrency = 'USD'; // Default currency
+
+        // Initialize default values on page load
         document.addEventListener('DOMContentLoaded', () => {
-            document.getElementById('date').value = new Date().toISOString().split('T')[0];
-            document.getElementById('invoice_number').value = 'INV-' + Math.floor(Math.random() * 100000).toString()
-                .padStart(5, '0');
+            const dateElement = document.getElementById('date');
+            const invoiceNumberElement = document.getElementById('invoice_number');
+            const currencyElement = document.getElementById('currency');
+
+            if (dateElement) {
+                dateElement.value = new Date().toISOString().split('T')[0];
+            }
+
+            if (invoiceNumberElement) {
+                invoiceNumberElement.value = 'INV-' + Math.floor(Math.random() * 100000)
+                    .toString().padStart(5, '0');
+            }
+
+            // Set default currency
+            if (currencyElement) {
+                currentCurrency = currencyElement.value; // Get the selected currency
+                currencyElement.addEventListener('change', (e) => {
+                    currentCurrency = e.target.value;
+                    updateCurrencySymbol();
+                });
+            }
+
+            updateCurrencySymbol();
+            updateDisplayFromList();
         });
 
-        function updateTotal(input) {
-            const row = input.closest('tr');
-            const quantity = parseFloat(row.querySelector('input[name$="[quantity]"]').value) || 0;
-            const price = parseFloat(row.querySelector('input[name$="[unit_price]"]').value) || 0;
-            const totalCell = row.querySelector('td:last-child');
-            const total = quantity * price;
-            totalCell.textContent = `$${total.toFixed(2)}`;
-            updateSubtotal();
-        }
+        // Update totals dynamically using the data stored in the `invoiceItems` list
+        function updateDisplayFromList() {
+            const tableBody = document.querySelector('#items-table tbody');
+            tableBody.innerHTML = ''; // Clear the table's current content
 
-        function updateSubtotal() {
             let subtotal = 0;
-            document.querySelectorAll('#items-table tbody tr').forEach(row => {
-                subtotal += parseFloat(row.querySelector('td:last-child').textContent.replace('$', '')) || 0;
+
+            invoiceItems.forEach((item, index) => {
+                const total = item.quantity * item.unit_price;
+                subtotal += total;
+
+                const row = document.createElement('tr');
+                row.innerHTML = `
+            <td><input type="text" name="items[${index}][name]" value="${item.name}" onchange="updateItemName(${index}, this.value)" required></td>
+            <td><input type="number" min="1" name="items[${index}][quantity]" value="${item.quantity}" onchange="updateItemQuantity(${index}, this.value)" required></td>
+            <td><input type="number" min="0" step="0.01" name="items[${index}][unit_price]" value="${item.unit_price}" onchange="updateItemPrice(${index}, this.value)" required></td>
+            <td>${getCurrencySymbol()}${formatCurrencyFlexible(total)}</td>
+            <td class="actions-col"><button type="button" class="btn btn-secondary btn-delete" onclick="deleteRow(${index})">🗑️</button></td>
+        `;
+                tableBody.appendChild(row);
             });
-            document.getElementById('subtotal').value = `$${subtotal.toFixed(2)}`;
-            updateGrandTotal();
+
+            // Update the subtotal and grand total fields
+            const subtotalElement = document.getElementById('subtotal');
+            subtotalElement.value = getCurrencySymbol() + formatCurrencyFlexible(subtotal);
+
+            updateGrandTotal(subtotal);
         }
 
-        function updateGrandTotal() {
-            const subtotal = parseFloat(document.getElementById('subtotal').value.replace('$', '')) || 0;
-            const tax = parseFloat(document.getElementById('tax').value) || 0;
-            const grandTotal = subtotal + tax;
-            document.getElementById('grand_total').value = `$${grandTotal.toFixed(2)}`;
+        // Update a specific item's name in the list
+        function updateItemName(index, name) {
+            invoiceItems[index].name = name;
+            updateDisplayFromList();
         }
 
+        // Update a specific item's quantity in the list
+        function updateItemQuantity(index, quantity) {
+            invoiceItems[index].quantity = parseFloat(quantity) || 0;
+            updateDisplayFromList();
+        }
+
+        // Update a specific item's price in the list
+        function updateItemPrice(index, price) {
+            invoiceItems[index].unit_price = parseFloat(price) || 0;
+            updateDisplayFromList();
+        }
+
+        // Add a new row to the table and the list
         function addRow() {
-            const table = document.querySelector('#items-table tbody');
-            const rowCount = table.rows.length;
-            const newRow = document.createElement('tr');
-            newRow.innerHTML = `
-                <td><input type="text" name="items[${rowCount}][name]" required></td>
-                <td><input type="number" min="1" value="1" name="items[${rowCount}][quantity]" onchange="updateTotal(this)" required></td>
-                <td><input type="number" min="0" step="0.01" value="0" name="items[${rowCount}][unit_price]" onchange="updateTotal(this)" required></td>
-                <td>$0.00</td>
-            `;
-            table.appendChild(newRow);
+            invoiceItems.push({
+                name: '', // Initialize with an empty name
+                quantity: 1,
+                unit_price: 0,
+            });
+            updateDisplayFromList();
+        }
+
+        // Delete a row from the table and the list
+        function deleteRow(index) {
+            invoiceItems.splice(index, 1);
+            updateDisplayFromList();
+
+            // Add an empty row if no items are left
+            if (invoiceItems.length === 0) {
+                addRow();
+            }
+        }
+
+        // Update the grand total by adding tax to the subtotal
+        function updateGrandTotal(subtotal) {
+            const taxField = document.getElementById('tax');
+            const grandTotalField = document.getElementById('grand_total');
+
+            const tax = parseFloat(taxField?.value) || 0;
+            const grandTotal = subtotal + tax;
+
+            grandTotalField.value = getCurrencySymbol() + formatCurrencyFlexible(grandTotal);
+        }
+
+        // Get the appropriate currency symbol based on the selected currency
+        function getCurrencySymbol() {
+            return currentCurrency === 'IQD' ? 'ع.د ' : '$'; // Dynamically return the symbol
+        }
+
+        // Format numbers into currency format with flexible behavior for decimals
+        function formatCurrencyFlexible(value) {
+            // If the value has decimals, leave it as-is
+            if (value % 1 !== 0) {
+                return value.toString();
+            }
+            // Otherwise, format the number with thousands separators
+            return value.toLocaleString(undefined);
+        }
+
+        // Update the currency symbol logic
+        function updateCurrencySymbol() {
+            updateDisplayFromList(); // Re-render the display to show updated currency symbols
         }
 
         function changeLanguage(lang) {
             window.location.href = '/change-language/' + lang;
         }
+
+        // Initialize the list with one default row
+        addRow();
     </script>
 </body>
 
