@@ -1,16 +1,26 @@
 <?php
 
 use App\Http\Controllers\InvoiceController;
+use App\Http\Controllers\SettingsController;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route;
 
+/* ── New invoice form ──────────────────────────────────────── */
+Route::get('/', [InvoiceController::class, 'create'])->name('invoice.create');
 
-Route::get('/', function () {
-    return view('welcome');
-});
-Route::get('/invoice', [InvoiceController::class, 'create'])->name('invoice.create');
-Route::post('/invoice', [InvoiceController::class, 'store'])->name('invoice.store');
-Route::get('/invoice/print', [InvoiceController::class, 'print'])->name('invoice.print');
+/* ── Invoice CRUD ──────────────────────────────────────────── */
+Route::post  ('/invoices',          [InvoiceController::class, 'store'])  ->name('invoice.store');
+Route::get   ('/invoices',          [InvoiceController::class, 'index'])  ->name('invoices.index');
+Route::get   ('/invoices/{id}',     [InvoiceController::class, 'show'])   ->name('invoice.show');
+Route::get   ('/invoices/{id}/edit',[InvoiceController::class, 'edit'])   ->name('invoice.edit');
+Route::put   ('/invoices/{id}',     [InvoiceController::class, 'update']) ->name('invoice.update');
+Route::delete('/invoices/{id}',     [InvoiceController::class, 'destroy'])->name('invoice.destroy');
+
+/* ── Settings ─────────────────────────────────────────────── */
+Route::get ('/settings', [SettingsController::class, 'edit'])  ->name('settings.edit');
+Route::put ('/settings', [SettingsController::class, 'update'])->name('settings.update');
+
+/* ── Language switcher ─────────────────────────────────────── */
 Route::get('/change-language/{locale}', function ($locale) {
     if (in_array($locale, ['en', 'ku', 'ar'])) {
         App::setLocale($locale);
