@@ -115,7 +115,7 @@
   ),
   'app' => 
   array (
-    'name' => 'Beston',
+    'name' => 'Bestoon Oil Shop',
     'env' => 'local',
     'debug' => true,
     'url' => 'http://localhost',
@@ -126,7 +126,7 @@
     'fallback_locale' => 'en',
     'faker_locale' => 'en_US',
     'cipher' => 'AES-256-CBC',
-    'key' => 'base64:1OuiAzl3PG4M2qSTN8zBVr82ZzJGSMi/v1oYoN63USo=',
+    'key' => 'base64:XbmKIFToV1xSkPxwb/Lf6sgumCSgj7vyf4York2uQ9M=',
     'previous_keys' => 
     array (
     ),
@@ -327,11 +327,11 @@
         ),
       ),
     ),
-    'prefix' => 'beston_cache_',
+    'prefix' => 'bestoon_oil_shop_cache_',
   ),
   'database' => 
   array (
-    'default' => 'nativephp',
+    'default' => 'sqlite',
     'connections' => 
     array (
       'sqlite' => 
@@ -413,14 +413,6 @@
         'prefix' => '',
         'prefix_indexes' => true,
       ),
-      'nativephp' => 
-      array (
-        'driver' => 'sqlite',
-        'url' => NULL,
-        'database' => 'E:\\work\\oil-shop-invoice\\database\\nativephp.sqlite',
-        'prefix' => '',
-        'foreign_key_constraints' => true,
-      ),
     ),
     'migrations' => 
     array (
@@ -433,7 +425,7 @@
       'options' => 
       array (
         'cluster' => 'redis',
-        'prefix' => 'beston_database_',
+        'prefix' => 'bestoon_oil_shop_database_',
         'persistent' => false,
       ),
       'default' => 
@@ -662,7 +654,7 @@
     'from' => 
     array (
       'address' => 'hello@example.com',
-      'name' => 'Beston',
+      'name' => 'Bestoon Oil Shop',
     ),
     'markdown' => 
     array (
@@ -676,11 +668,11 @@
   'nativephp' => 
   array (
     'version' => '1.0.0',
-    'app_id' => 'com.oilshop.invoice',
+    'app_id' => 'com.beston.oilshop',
     'deeplink_scheme' => NULL,
-    'author' => 'QuickTech',
+    'author' => 'Beston Oil Shop',
     'copyright' => NULL,
-    'description' => 'An awesome app built with NativePHP',
+    'description' => 'Oil Shop Invoice Management System',
     'website' => 'https://nativephp.com',
     'provider' => 'App\\Providers\\NativeAppServiceProvider',
     'cleanup_env_keys' => 
@@ -767,7 +759,7 @@
       'database' => 
       array (
         'driver' => 'database',
-        'connection' => 'nativephp',
+        'connection' => NULL,
         'table' => 'jobs',
         'queue' => 'default',
         'retry_after' => 90,
@@ -818,13 +810,13 @@
     ),
     'batching' => 
     array (
-      'database' => 'nativephp',
+      'database' => 'sqlite',
       'table' => 'job_batches',
     ),
     'failed' => 
     array (
       'driver' => 'database-uuids',
-      'database' => 'nativephp',
+      'database' => 'sqlite',
       'table' => 'failed_jobs',
     ),
   ),
@@ -855,7 +847,7 @@
   ),
   'session' => 
   array (
-    'driver' => 'file',
+    'driver' => 'database',
     'lifetime' => 120,
     'expire_on_close' => false,
     'encrypt' => false,
@@ -868,7 +860,7 @@
       0 => 2,
       1 => 100,
     ),
-    'cookie' => 'beston_session',
+    'cookie' => 'bestoon_oil_shop_session',
     'path' => '/',
     'domain' => NULL,
     'secure' => NULL,
@@ -878,7 +870,7 @@
   ),
   'nativephp-internal' => 
   array (
-    'running' => true,
+    'running' => false,
     'storage_path' => NULL,
     'database_path' => NULL,
     'secret' => NULL,
