@@ -109,13 +109,13 @@
   array (
     'paths' => 
     array (
-      0 => 'C:\\Users\\sarba\\oil-shop-invoice\\resources\\views',
+      0 => 'E:\\work\\oil-shop-invoice\\resources\\views',
     ),
-    'compiled' => 'C:\\Users\\sarba\\oil-shop-invoice\\storage\\framework\\views',
+    'compiled' => 'E:\\work\\oil-shop-invoice\\storage\\framework\\views',
   ),
   'app' => 
   array (
-    'name' => 'Laravel',
+    'name' => 'Beston',
     'env' => 'local',
     'debug' => true,
     'url' => 'http://localhost',
@@ -126,7 +126,7 @@
     'fallback_locale' => 'en',
     'faker_locale' => 'en_US',
     'cipher' => 'AES-256-CBC',
-    'key' => 'base64:c/FdferfMIpbPc0gGf7+ZmsLv8HePdPFGszV37MJZ+w=',
+    'key' => 'base64:1OuiAzl3PG4M2qSTN8zBVr82ZzJGSMi/v1oYoN63USo=',
     'previous_keys' => 
     array (
     ),
@@ -273,8 +273,8 @@
       'file' => 
       array (
         'driver' => 'file',
-        'path' => 'C:\\Users\\sarba\\oil-shop-invoice\\storage\\framework/cache/data',
-        'lock_path' => 'C:\\Users\\sarba\\oil-shop-invoice\\storage\\framework/cache/data',
+        'path' => 'E:\\work\\oil-shop-invoice\\storage\\framework/cache/data',
+        'lock_path' => 'E:\\work\\oil-shop-invoice\\storage\\framework/cache/data',
       ),
       'memcached' => 
       array (
@@ -327,18 +327,18 @@
         ),
       ),
     ),
-    'prefix' => 'laravel_cache_',
+    'prefix' => 'beston_cache_',
   ),
   'database' => 
   array (
-    'default' => 'sqlite',
+    'default' => 'nativephp',
     'connections' => 
     array (
       'sqlite' => 
       array (
         'driver' => 'sqlite',
         'url' => NULL,
-        'database' => 'C:\\Users\\sarba\\oil-shop-invoice\\database\\database.sqlite',
+        'database' => 'E:\\work\\oil-shop-invoice\\database\\database.sqlite',
         'prefix' => '',
         'foreign_key_constraints' => true,
         'busy_timeout' => NULL,
@@ -413,6 +413,14 @@
         'prefix' => '',
         'prefix_indexes' => true,
       ),
+      'nativephp' => 
+      array (
+        'driver' => 'sqlite',
+        'url' => NULL,
+        'database' => 'E:\\work\\oil-shop-invoice\\database\\nativephp.sqlite',
+        'prefix' => '',
+        'foreign_key_constraints' => true,
+      ),
     ),
     'migrations' => 
     array (
@@ -425,7 +433,7 @@
       'options' => 
       array (
         'cluster' => 'redis',
-        'prefix' => 'laravel_database_',
+        'prefix' => 'beston_database_',
         'persistent' => false,
       ),
       'default' => 
@@ -456,7 +464,7 @@
       'local' => 
       array (
         'driver' => 'local',
-        'root' => 'C:\\Users\\sarba\\oil-shop-invoice\\storage\\app/private',
+        'root' => 'E:\\work\\oil-shop-invoice\\storage\\app/private',
         'serve' => true,
         'throw' => false,
         'report' => false,
@@ -464,7 +472,7 @@
       'public' => 
       array (
         'driver' => 'local',
-        'root' => 'C:\\Users\\sarba\\oil-shop-invoice\\storage\\app/public',
+        'root' => 'E:\\work\\oil-shop-invoice\\storage\\app/public',
         'url' => 'http://localhost/storage',
         'visibility' => 'public',
         'throw' => false,
@@ -486,7 +494,7 @@
     ),
     'links' => 
     array (
-      'C:\\Users\\sarba\\oil-shop-invoice\\public\\storage' => 'C:\\Users\\sarba\\oil-shop-invoice\\storage\\app/public',
+      'E:\\work\\oil-shop-invoice\\public\\storage' => 'E:\\work\\oil-shop-invoice\\storage\\app/public',
     ),
   ),
   'logging' => 
@@ -511,14 +519,14 @@
       'single' => 
       array (
         'driver' => 'single',
-        'path' => 'C:\\Users\\sarba\\oil-shop-invoice\\storage\\logs/laravel.log',
+        'path' => 'E:\\work\\oil-shop-invoice\\storage\\logs/laravel.log',
         'level' => 'debug',
         'replace_placeholders' => true,
       ),
       'daily' => 
       array (
         'driver' => 'daily',
-        'path' => 'C:\\Users\\sarba\\oil-shop-invoice\\storage\\logs/laravel.log',
+        'path' => 'E:\\work\\oil-shop-invoice\\storage\\logs/laravel.log',
         'level' => 'debug',
         'days' => 14,
         'replace_placeholders' => true,
@@ -583,7 +591,7 @@
       ),
       'emergency' => 
       array (
-        'path' => 'C:\\Users\\sarba\\oil-shop-invoice\\storage\\logs/laravel.log',
+        'path' => 'E:\\work\\oil-shop-invoice\\storage\\logs/laravel.log',
       ),
     ),
   ),
@@ -654,23 +662,23 @@
     'from' => 
     array (
       'address' => 'hello@example.com',
-      'name' => 'Laravel',
+      'name' => 'Beston',
     ),
     'markdown' => 
     array (
       'theme' => 'default',
       'paths' => 
       array (
-        0 => 'C:\\Users\\sarba\\oil-shop-invoice\\resources\\views/vendor/mail',
+        0 => 'E:\\work\\oil-shop-invoice\\resources\\views/vendor/mail',
       ),
     ),
   ),
   'nativephp' => 
   array (
     'version' => '1.0.0',
-    'app_id' => NULL,
+    'app_id' => 'com.oilshop.invoice',
     'deeplink_scheme' => NULL,
-    'author' => NULL,
+    'author' => 'QuickTech',
     'copyright' => NULL,
     'description' => 'An awesome app built with NativePHP',
     'website' => 'https://nativephp.com',
@@ -732,16 +740,6 @@
     ),
     'queue_workers' => 
     array (
-      'default' => 
-      array (
-        'queues' => 
-        array (
-          0 => 'default',
-        ),
-        'memory_limit' => 128,
-        'timeout' => 60,
-        'sleep' => 3,
-      ),
     ),
     'prebuild' => 
     array (
@@ -754,7 +752,7 @@
     'binary_path' => NULL,
     'hot_reload' => 
     array (
-      0 => 'C:\\Users\\sarba\\oil-shop-invoice\\app/Providers/NativeAppServiceProvider.php',
+      0 => 'E:\\work\\oil-shop-invoice\\app/Providers/NativeAppServiceProvider.php',
     ),
   ),
   'queue' => 
@@ -769,7 +767,7 @@
       'database' => 
       array (
         'driver' => 'database',
-        'connection' => NULL,
+        'connection' => 'nativephp',
         'table' => 'jobs',
         'queue' => 'default',
         'retry_after' => 90,
@@ -820,13 +818,13 @@
     ),
     'batching' => 
     array (
-      'database' => 'sqlite',
+      'database' => 'nativephp',
       'table' => 'job_batches',
     ),
     'failed' => 
     array (
       'driver' => 'database-uuids',
-      'database' => 'sqlite',
+      'database' => 'nativephp',
       'table' => 'failed_jobs',
     ),
   ),
@@ -857,11 +855,11 @@
   ),
   'session' => 
   array (
-    'driver' => 'database',
+    'driver' => 'file',
     'lifetime' => 120,
     'expire_on_close' => false,
     'encrypt' => false,
-    'files' => 'C:\\Users\\sarba\\oil-shop-invoice\\storage\\framework/sessions',
+    'files' => 'E:\\work\\oil-shop-invoice\\storage\\framework/sessions',
     'connection' => NULL,
     'table' => 'sessions',
     'store' => NULL,
@@ -870,7 +868,7 @@
       0 => 2,
       1 => 100,
     ),
-    'cookie' => 'laravel_session',
+    'cookie' => 'beston_session',
     'path' => '/',
     'domain' => NULL,
     'secure' => NULL,
@@ -880,7 +878,7 @@
   ),
   'nativephp-internal' => 
   array (
-    'running' => false,
+    'running' => true,
     'storage_path' => NULL,
     'database_path' => NULL,
     'secret' => NULL,

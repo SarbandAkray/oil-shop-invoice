@@ -129,6 +129,21 @@ return [
         ],
     ],
 
+    /**
+     * The queue workers that get auto-started on your application start.
+     * Set to empty array to disable auto-starting queue workers.
+     */
+    'queue_workers' => [
+        // Disabled in development to prevent errors
+        // Uncomment when you need background job processing
+        // 'default' => [
+        //     'queues' => ['default'],
+        //     'memory_limit' => 128,
+        //     'timeout' => 60,
+        //     'sleep' => 3,
+        // ],
+    ],
+
     'prebuild' => [
         'npm run build', // Run a command before the build
         'php artisan optimize', // Run another command before the build

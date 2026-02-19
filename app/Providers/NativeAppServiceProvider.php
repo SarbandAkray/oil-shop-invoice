@@ -13,7 +13,11 @@ class NativeAppServiceProvider implements ProvidesPhpIni
      */
     public function boot(): void
     {
-        Window::open()->showDevTools(false)->maximized()->hideMenu();
+        Window::open()
+            ->title('Beston')
+            ->showDevTools(false)
+            ->maximized()
+            ->hideMenu();
     }
 
 
